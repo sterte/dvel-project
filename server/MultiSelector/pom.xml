@@ -27,6 +27,15 @@
 		<version>2.23.2</version>
 	</dependency>
 	<!-- jersey end -->
+
+	<!-- mongodb begin -->
+	<dependency>
+        <groupId>org.mongodb</groupId>
+        <artifactId>mongodb-driver</artifactId>
+        <version>3.4.3</version>
+    </dependency>
+	<!-- mongodb end -->
+	
   </dependencies>
   <build>
     <finalName>MultiSelector</finalName>
