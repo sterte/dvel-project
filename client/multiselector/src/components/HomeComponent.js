@@ -8,15 +8,19 @@ function Home(props) {
             <div className="row justify-content-md-center">
 		        <div className="col-4">
                     <Example 
-                    type="actor"/>
+                    type="actor"
+                    />
                 </div>
                 <div className="col-4">
                     <Example 
-                    type="director"/>
+                    type="director"
+                    />
                 </div>
                 <div className="col-4">
                     <Example 
-                    type="movie"/>
+                    type="movie"
+                    autocompleteKeywords="testpar"
+                    />
                 </div>
             </div>
         </div>

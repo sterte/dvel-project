@@ -38,14 +38,16 @@ class Example extends Component {
 
     this.state = {
       value: '',
-      previousValue: ''
+      previousValue: ''      
     };
   }
 
 
   
   loadSuggestions(value) {
-    this.props.fetchItems(this.props.type, value);
+    let request = this.props.autocompleteKeywords ? this.props.autocompleteKeywords : "keywords";
+    request = request + "/" + this.props.type + "/" + value;
+    this.props.fetchItems(request);
   }
 
   onChange = (event, { newValue }) => {
@@ -55,7 +57,7 @@ class Example extends Component {
     });
   };
     
-  onSuggestionsFetchRequested = ({ value }) => {
+  onSuggestionsFetchRequested = ({ value }) => {    
     this.loadSuggestions(value);
   };
 

@@ -24,7 +24,7 @@ import static com.mongodb.client.model.Projections.*;
 /** REST API endpoint for "/{type}/" requests
 possible "type" values: "actor", "director", "movie"
  */
-@Path("/{type: (actor|director|movie)}")
+@Path("/keywords/{type: (actor|director|movie)}")
 public class MultiSelectorTypeAPI {
 
 	
