@@ -42,8 +42,8 @@ class MyAutoSuggest extends Component {
     if(!this.props.entries)
       return;
     if(this.props.entries.length>0){
-      this.setState({selectedElements: this.state.selectedElements.concat(this.props.entries)})
-    }
+      this.setState({selectedElements: this.state.selectedElements.concat(this.props.entries)})      
+    }    
   }
 
   getSuggestionValue(suggestion) {
@@ -84,7 +84,18 @@ class MyAutoSuggest extends Component {
     if(!value)
       return;
     let fieldName = this.props.autocompleteValue ? this.props.autocompleteValue : "value";
-    this.setState({selectedElements: this.state.selectedElements.filter((el) => el[fieldName] !== value)});
+    this.setState({selectedElements: this.state.selectedElements.filter((el) => el[fieldName] !== value)});    
+  }
+
+  selectedElementIds(){
+    let fieldName = this.props.autocompleteValue ? this.props.autocompleteValue : "value";
+    let result = "";    
+    for (let i=0; i<this.state.selectedElements.length; i++){      
+      if(result.length > 0)
+        result += ", ";
+      result += this.state.selectedElements[i][fieldName];      
+    }
+    return result;
   }
 
   onSuggestionsFetchRequested = ({ value }) => {        
@@ -121,8 +132,8 @@ class MyAutoSuggest extends Component {
         </div>
         );
     });
-  
 
+    let hiddenInputfieldName = this.props.hiddenInputId ? this.props.hiddenInputId : "'multiSelectorHiddenInput'";
 
     return (
       <>
@@ -142,6 +153,7 @@ class MyAutoSuggest extends Component {
             getSuggestionValue={this.getSuggestionValue}
             renderSuggestion={this.renderSuggestion}
             inputProps={inputProps} />
+          <input type="hidden" readOnly id={hiddenInputfieldName} value={this.selectedElementIds()}/>
         </div>
       </div>
       </>
