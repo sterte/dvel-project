@@ -2,6 +2,8 @@ import * as ActionTypes from './ActionTypes';
 import { apiUrl } from '../shared/baseUrl';
 
 export const fetchItems = (type, label) => (dispatch) => { //it returns a function -> it is a thunk		
+    dispatch(itemsLoading());
+
 	return fetch(apiUrl + type + "/" + label)
 		.then(response => {
 			if(response.ok) {

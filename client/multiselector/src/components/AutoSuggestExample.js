@@ -7,7 +7,7 @@ import { fetchItems } from '../redux/ActionCreators';
 
 const mapStateToProps = (state) => {
   return {
-    suggestions: state.suggestions
+    suggestions: state
   }
 }
 
@@ -60,9 +60,7 @@ class Example extends Component {
   };
 
   onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: []
-    });
+      this.props.suggestions.suggestions = [];    
   };
 
   render() {
@@ -80,7 +78,7 @@ class Example extends Component {
           <strong>Status:</strong> {status}
         </div>
         <Autosuggest 
-          suggestions={this.props.suggestions}
+          suggestions={this.props.suggestions.suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={getSuggestionValue}
