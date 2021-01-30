@@ -40,30 +40,40 @@ class MyAutoSuggest extends Component {
     this.shouldRenderSuggestions = this.shouldRenderSuggestions.bind(this);
   }
   
-  componentDidMount(){
-    if(!this.props.entries)
+  componentDidMount(){    
+    this.autocompleteKeywords = this.props.autocompleteKeywords ? this.props.autocompleteKeywords : "keywords";
+    this.autocompleteLabel = this.props.autocompleteLabel ? this.props.autocompleteLabel : "label";
+    this.autocompleteURL = this.props.autocompleteURL ? this.props.autocompleteURL : "";
+    this.autocompleteValue = this.props.autocompleteLabel ? this.props.autocompleteValue : "value";
+    this.emptyListMessage = this.props.emptyListMessage ? this.props.emptyListMessage : "";
+    this.entries = this.props.entries ? this.props.entries : [];
+    this.hiddenInputId = this.props.hiddenInputId ? this.props.hiddenInputId : "multiSelectorHiddenInput"; 
+    this.maxEntries = this.props.maxEntries ? this.props.maxEntries : 0;
+    this.maxResults = this.props.maxResults ? this.props.maxResults : 10;
+    this.minQueryLength = this.props.minQueryLength ? this.props.minQueryLength : 3;
+    this.placeholder = this.props.placeholder ? this.props.placeholder : "";
+    this.title = this.props.title ? this.props.title : "";    
+    this.viewListMessage = this.props.viewListMessage ? this.props.viewListMessage : "";
+
+    if(!this.entries)
       return;
-    if(this.props.entries.length>0){
+    if(this.entries.length>0){
       this.setState({selectedElements: this.state.selectedElements.concat(this.props.entries)})      
     }    
   }
 
   getSuggestionValue(suggestion) {
-    let fieldName = this.props.autocompleteLabel ? this.props.autocompleteLabel : "label";
-    return suggestion[fieldName];
+    return suggestion[this.autocompleteLabel];    
   }
   
   renderSuggestion(suggestion) {
-    let fieldName = this.props.autocompleteLabel ? this.props.autocompleteLabel : "label";
     return (      
-      <span>{suggestion[fieldName]}</span>
+      <span>{suggestion[this.autocompleteLabel]}</span>
     );
   }
   
-  loadSuggestions(value, maxResults) {
-    let url = this.props.autocompleteURL ? this.props.autocompleteURL : "";
-    let keywords = this.props.autocompleteKeywords ? this.props.autocompleteKeywords : "keywords";
-    let request = url + "/" + keywords + "/" + this.props.type + "/" + value;
+  loadSuggestions(value, maxResults) {        
+    let request = this.autocompleteURL + "/" + this.autocompleteKeywords + "/" + this.props.type + "/" + value;
     this.props.fetchItems(request, maxResults);
   }
 
@@ -84,38 +94,33 @@ class MyAutoSuggest extends Component {
 
   removeSelectedItem(value){
     if(!value)
-      return;
-    let fieldName = this.props.autocompleteValue ? this.props.autocompleteValue : "value";
-    this.setState({selectedElements: this.state.selectedElements.filter((el) => el[fieldName] !== value)});    
+      return;    
+    this.setState({selectedElements: this.state.selectedElements.filter((el) => el[this.autocompleteValue] !== value)});    
   }
 
   selectedElementIds(){
-    let fieldName = this.props.autocompleteValue ? this.props.autocompleteValue : "value";
     let result = "";    
     for (let i=0; i<this.state.selectedElements.length; i++){      
       if(result.length > 0)
         result += ", ";
-      result += this.state.selectedElements[i][fieldName];      
+      result += this.state.selectedElements[i][this.autocompleteValue];      
     }
     return result;
   }
 
-  shouldRenderSuggestions(value, reason) {
-    let minQueryLength = this.props.minQueryLength ? this.props.minQueryLength : 3;
-    return value.trim().length >= minQueryLength;
+  shouldRenderSuggestions(value, reason) {    
+    return value.trim().length >= this.minQueryLength;
   }
 
-  visibleSelectionSize() {
-    let maxEntries = this.props.maxEntries ? this.props.maxEntries : 0;
-    if(this.state.selectionExpanded || maxEntries == 0)
+  visibleSelectionSize() {    
+    if(this.state.selectionExpanded || this.maxEntries === 0)
       return this.state.selectedElements.length;          
-    return maxEntries;
+    return this.maxEntries;
 
   }
 
-  onSuggestionsFetchRequested = ({ value }) => {        
-    let maxResults = this.props.maxResults ? this.props.maxResults : 10;
-    this.loadSuggestions(value, maxResults);
+  onSuggestionsFetchRequested = ({ value }) => {            
+    this.loadSuggestions(value, this.maxResults);
   };
 
   onSuggestionsClearRequested = () => {
@@ -123,21 +128,20 @@ class MyAutoSuggest extends Component {
   };  
 
   render() {
-    let placeholder = this.props.placeholder ? this.props.placeholder : "";
+    
     const { value } = this.state;    
     const inputProps = {
-      placeholder: placeholder,
+      placeholder: this.placeholder,
       value,
       onChange: this.onChange,
     };
     const status = (this.props.suggestions.isLoading ? 'Loading...' : 'Type to load suggestions');
     
     const RenderSelectedItem = ({item}) => {
-      let fieldName = this.props.autocompleteValue ? this.props.autocompleteValue : "value";
       return(
         <Card>				      
         <CardTitle>{item.label}</CardTitle>
-        <Button onClick={() => this.removeSelectedItem(item[fieldName])}>X</Button>
+        <Button onClick={() => this.removeSelectedItem(item[this.autocompleteValue])}>X</Button>
         </Card>
         );
     }
@@ -150,22 +154,28 @@ class MyAutoSuggest extends Component {
         );
     });
 
-    let hiddenInputId = this.props.hiddenInputId ? this.props.hiddenInputId : "multiSelectorHiddenInput";
-    let maxEntries = this.props.maxEntries ? this.props.maxEntries : 0;    
-    let title = this.props.title ? this.props.title : "";    
-    let viewListMessage = this.props.viewListMessage ? this.props.viewListMessage : "";
+    const totalSelectionCount = (maxEntries) => {      
+      let count = this.state.selectedElements.length - maxEntries;
+      return (
+        <Card>				      
+        <CardTitle>{count}</CardTitle>        
+        </Card>
+        );
+    };
+
 
     return (
       <>
-      {title &&
+      {this.title &&
       <div className="row">
-        <p>{title}</p>
+        <p>{this.title}</p>
       </div>
       }
       <div className="row">      
-        {this.state.selectedElements.length === 0 ? this.props.emptyListMessage : viewListMessage }
+        {this.state.selectedElements.length === 0 ? this.emptyListMessage : this.viewListMessage }
         {this.state.selectedElements.length > 0 && selectedBoxes }
-        {this.state.selectedElements.length > maxEntries && <Button onClick={() => this.setState({selectionExpanded: true})}>X</Button> }
+        {this.state.selectedElements.length > this.maxEntries && !this.state.selectionExpanded && totalSelectionCount(this.maxEntries) }
+        {this.state.selectedElements.length > this.maxEntries && !this.state.selectionExpanded && <Button onClick={() => this.setState({selectionExpanded: true})}>X</Button> }
       </div>
       <div className="row">
         <div>
@@ -181,7 +191,7 @@ class MyAutoSuggest extends Component {
             renderSuggestion={this.renderSuggestion}
             shouldRenderSuggestions={this.shouldRenderSuggestions}
             inputProps={inputProps} />
-          <input type="hidden" readOnly id={hiddenInputId} value={this.selectedElementIds()}/>
+          <input type="hidden" readOnly id={this.hiddenInputId} value={this.selectedElementIds()}/>
         </div>
       </div>
       </>

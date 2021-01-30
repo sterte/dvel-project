@@ -15,7 +15,7 @@ function Home(props) {
                     emptyListMessage="Elenco Ruoli vuoto"
                     entries={[{"label": "Pippo", "value": 2000000}, {"label": "Pluto", "value": 2000001}]}
                     hiddenInputId="multiSelectorHiddenInput"
-                    maxEntries="5"
+                    maxEntries="3"
                     maxResults="10"
                     minQueryLength="3"
                     placeholder="Filtra nome ruolo"
