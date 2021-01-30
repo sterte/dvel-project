@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import { connect } from 'react-redux';
 import { fetchItems } from '../redux/ActionCreators';
-
+import { Card, CardTitle, Button} from 'reactstrap';
 
 
 const mapStateToProps = (state) => {
@@ -34,8 +34,10 @@ class MyAutoSuggest extends Component {
     };
 
     this.renderSuggestion = this.renderSuggestion.bind(this);
+    this.getSuggestionValue = this.getSuggestionValue.bind(this);
+    this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
   }
-
+  
 
   getSuggestionValue(suggestion) {
     let fieldName = this.props.autocompleteLabel ? this.props.autocompleteLabel : "label";
@@ -63,7 +65,18 @@ class MyAutoSuggest extends Component {
     });
   };
     
-  onSuggestionsFetchRequested = ({ value }) => {    
+
+  onSuggestionSelected(event, { suggestion }){
+    if(!this.state.selectedElements.includes(suggestion)){      
+      this.setState({selectedElements: this.state.selectedElements.concat(suggestion), previousValue: '', value: ''});
+    }    
+  }
+
+  removeSelectedItem(value){
+    this.setState({selectedElements: this.state.selectedElements.filter((el) => el.value != value)});
+  }
+
+  onSuggestionsFetchRequested = ({ value }) => {        
     this.loadSuggestions(value);
   };
 
@@ -76,14 +89,33 @@ class MyAutoSuggest extends Component {
     const inputProps = {
       placeholder: "Type 'c'",
       value,
-      onChange: this.onChange
+      onChange: this.onChange,
     };
     const status = (this.props.suggestions.isLoading ? 'Loading...' : 'Type to load suggestions');
     
+    const RenderSelectedItem = ({item}) => {
+      return(
+        <Card>				      
+        <CardTitle>{item.label}</CardTitle>
+        <Button onClick={() => this.removeSelectedItem(item.value)}>X</Button>
+        </Card>
+        );
+    }
+
+    const selectedBoxes = this.state.selectedElements.map((item) => {
+      return (
+        <div key={item.value} className="col-12 col-md-5 m-1">
+        <RenderSelectedItem item={item} />
+        </div>
+        );
+    });
+  
+
+
     return (
       <>
       <div className="row">
-        {this.state.selectedElements.length == 0 && this.props.emptyListMessage }
+        {this.state.selectedElements.length === 0 ? this.props.emptyListMessage : selectedBoxes }
       </div>
       <div className="row">
         <div>
@@ -94,6 +126,7 @@ class MyAutoSuggest extends Component {
             suggestions={this.props.suggestions.suggestions}
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            onSuggestionSelected={this.onSuggestionSelected}
             getSuggestionValue={this.getSuggestionValue}
             renderSuggestion={this.renderSuggestion}
             inputProps={inputProps} />

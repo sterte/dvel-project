@@ -11,19 +11,23 @@ function Home(props) {
                     type="actor"
                     autocompleteLabel="label"
                     autocompleteURL="http://localhost:8080"
-                    emptyListMessage="Elenco ruoli vuoto"
+                    emptyListMessage="Elenco Attori vuoto"
                     />
                 </div>
                 <div className="col-4">
                     <MultiSelector 
                     type="director"
-                    emptyListMessage="Eleno"
+                    autocompleteLabel="label"
+                    autocompleteURL="http://localhost:8080"
+                    emptyListMessage="Elenco registi vuoto"
                     />
                 </div>
                 <div className="col-4">
                     <MultiSelector 
                     type="movie"
-                    autocompleteKeywords="keywords"
+                    autocompleteLabel="label"
+                    autocompleteURL="http://localhost:8080"
+                    emptyListMessage="Elenco film vuoto"
                     />
                 </div>
             </div>
