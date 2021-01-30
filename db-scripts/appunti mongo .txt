@@ -4,7 +4,7 @@ mongoimport --db dvel --collection item --file ./Scrivania/actors.json
 mongoimport --db dvel --collection item --file ./Scrivania/movies.json 
 
 #query per generare "value" random da 0 a 1000000
-db.item.find().forEach(function(el) { db.item.update({_id: el._id}, {$set:{ value: Math.floor(Math.random() * 1000000)}})})
+db.item.find().forEach(function(el) { db.item.update({_id: el._id}, {$set:{ value: NumberInt(Math.floor(Math.random() * 1000000))}})}
 
 #query per verificare "value" distinti
 db.item.distinct("value").length
