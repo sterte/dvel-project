@@ -6,16 +6,19 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import it.dvel.test.arteconi.db.MongoDbConnection;
 import java.util.regex.Pattern;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.bson.Document;
 
 
+import com.mongodb.client.FindIterable;
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
 
@@ -34,13 +37,14 @@ public class MultiSelectorTypeAPI {
 	@GET
 	@Path("/{label}")
 	@Produces(MediaType.APPLICATION_JSON)  
-	public Response getByTypeAndValue(@PathParam("type") String type, @PathParam("label") String label) {		
+	public Response getByTypeAndValue(@PathParam("type") String type, @PathParam("label") String label, @DefaultValue("0") @QueryParam("maxResults") String maxResults) {		
 		
 		String result = "";
 		Status status = Status.OK;
 		long timer = 0;
 		String formattedDate = "";
-		
+		int maxResultsToInt = new Integer(maxResults);
+
 		try{
 			timer = System.currentTimeMillis();
 
@@ -59,12 +63,18 @@ public class MultiSelectorTypeAPI {
 			Pattern pattern = Pattern.compile("^.*" + label + ".*$", Pattern.CASE_INSENSITIVE);
 
 			//executes the query to the mongo db
-			MongoCursor<Document> cursor = collection.find(
+			FindIterable query = collection.find(
 				and(
 					eq("type", type), 
 					regex("label", pattern)
 				)
-			).projection(fields(exclude("type"), excludeId())).iterator();
+			).projection(fields(exclude("type"), excludeId()));
+
+			if(maxResultsToInt!=0){
+				query.limit(maxResultsToInt);
+			}
+			
+			MongoCursor<Document> cursor = query.iterator();
 			
 			//build a string representing the obtained result in json
 			result = "[";

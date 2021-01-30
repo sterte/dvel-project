@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({  
-  fetchItems: (type, value) => dispatch(fetchItems(type, value))
+  fetchItems: (request, maxResults) => dispatch(fetchItems(request, maxResults))
 });
 
 
@@ -59,11 +59,11 @@ class MyAutoSuggest extends Component {
     );
   }
   
-  loadSuggestions(value) {
+  loadSuggestions(value, maxResults) {
     let url = this.props.autocompleteURL ? this.props.autocompleteURL : "";
     let keywords = this.props.autocompleteKeywords ? this.props.autocompleteKeywords : "keywords";
     let request = url + "/" + keywords + "/" + this.props.type + "/" + value;
-    this.props.fetchItems(request);
+    this.props.fetchItems(request, maxResults);
   }
 
   onChange = (event, { newValue }) => {
@@ -108,7 +108,8 @@ class MyAutoSuggest extends Component {
   }
 
   onSuggestionsFetchRequested = ({ value }) => {        
-    this.loadSuggestions(value);
+    let maxResults = this.props.maxResults ? this.props.maxResults : 10;
+    this.loadSuggestions(value, maxResults);
   };
 
   onSuggestionsClearRequested = () => {

@@ -16,6 +16,7 @@ function Home(props) {
                     entries={[{"label": "Pippo", "value": 2000000}, {"label": "Pluto", "value": 2000001}]}
                     hiddenInputId="multiSelectorHiddenInput"
                     maxEntries="5"
+                    maxResults="10"
                     type="actor"
                     />
                 </div>

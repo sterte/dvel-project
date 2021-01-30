@@ -1,9 +1,10 @@
 import * as ActionTypes from './ActionTypes';
-import { apiUrl } from '../shared/baseUrl';
 
-export const fetchItems = (request) => (dispatch) => { //it returns a function -> it is a thunk		
+export const fetchItems = (request, limit) => (dispatch) => { //it returns a function -> it is a thunk		
     dispatch(itemsLoading());
 
+	if(limit != 0)
+		request += "?maxResults=" + limit;
 	return fetch(request)
 		.then(response => {
 			if(response.ok) {
