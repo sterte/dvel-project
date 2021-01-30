@@ -10,11 +10,14 @@ function Home(props) {
                     <Example 
                     type="actor"
                     autocompleteLabel="label"
+                    autocompleteURL="http://localhost:8080"
+                    emptyListMessage="Elenco ruoli vuoto"
                     />
                 </div>
                 <div className="col-4">
                     <Example 
                     type="director"
+                    emptyListMessage="Eleno"
                     />
                 </div>
                 <div className="col-4">

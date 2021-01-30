@@ -4,7 +4,7 @@ import { apiUrl } from '../shared/baseUrl';
 export const fetchItems = (request) => (dispatch) => { //it returns a function -> it is a thunk		
     dispatch(itemsLoading());
 
-	return fetch(apiUrl + request)
+	return fetch(request)
 		.then(response => {
 			if(response.ok) {
 				return response;

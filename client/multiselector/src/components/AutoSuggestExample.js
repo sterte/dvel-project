@@ -29,7 +29,8 @@ class Example extends Component {
 
     this.state = {
       value: '',
-      previousValue: ''      
+      previousValue: '',
+      selectedElements: []       
     };
 
     this.renderSuggestion = this.renderSuggestion.bind(this);
@@ -49,8 +50,9 @@ class Example extends Component {
   }
   
   loadSuggestions(value) {
-    let request = this.props.autocompleteKeywords ? this.props.autocompleteKeywords : "keywords";
-    request = request + "/" + this.props.type + "/" + value;
+    let url = this.props.autocompleteURL ? this.props.autocompleteURL : "";
+    let keywords = this.props.autocompleteKeywords ? this.props.autocompleteKeywords : "keywords";
+    let request = url + "/" + keywords + "/" + this.props.type + "/" + value;
     this.props.fetchItems(request);
   }
 
@@ -79,18 +81,25 @@ class Example extends Component {
     const status = (this.props.suggestions.isLoading ? 'Loading...' : 'Type to load suggestions');
     
     return (
-      <div>
-        <div className="status">
-          <strong>Status:</strong> {status}
-        </div>
-        <Autosuggest 
-          suggestions={this.props.suggestions.suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={this.getSuggestionValue}
-          renderSuggestion={this.renderSuggestion}
-          inputProps={inputProps} />
+      <>
+      <div className="row">
+        {this.state.selectedElements.length == 0 && this.props.emptyListMessage }
       </div>
+      <div className="row">
+        <div>
+          <div className="status">
+            <strong>Status:</strong> {status}
+          </div>
+          <Autosuggest 
+            suggestions={this.props.suggestions.suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={this.getSuggestionValue}
+            renderSuggestion={this.renderSuggestion}
+            inputProps={inputProps} />
+        </div>
+      </div>
+      </>
     );
   }
 }
