@@ -73,7 +73,10 @@ class MyAutoSuggest extends Component {
   }
 
   removeSelectedItem(value){
-    this.setState({selectedElements: this.state.selectedElements.filter((el) => el.value != value)});
+    if(!value)
+      return;
+    let fieldName = this.props.autocompleteValue ? this.props.autocompleteValue : "value";
+    this.setState({selectedElements: this.state.selectedElements.filter((el) => el[fieldName] != value)});
   }
 
   onSuggestionsFetchRequested = ({ value }) => {        
@@ -94,10 +97,11 @@ class MyAutoSuggest extends Component {
     const status = (this.props.suggestions.isLoading ? 'Loading...' : 'Type to load suggestions');
     
     const RenderSelectedItem = ({item}) => {
+      let fieldName = this.props.autocompleteValue ? this.props.autocompleteValue : "value";
       return(
         <Card>				      
         <CardTitle>{item.label}</CardTitle>
-        <Button onClick={() => this.removeSelectedItem(item.value)}>X</Button>
+        <Button onClick={() => this.removeSelectedItem(item[fieldName])}>X</Button>
         </Card>
         );
     }

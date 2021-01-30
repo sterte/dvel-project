@@ -8,10 +8,14 @@ function Home(props) {
             <div className="row justify-content-md-center">
 		        <div className="col-4">
                     <MultiSelector 
-                    type="actor"
+                    autocompleteKeywords="keywords"                    
                     autocompleteLabel="label"
+                    autocompleteValue="value"
                     autocompleteURL="http://localhost:8080"
                     emptyListMessage="Elenco Attori vuoto"
+
+
+                    type="actor"
                     />
                 </div>
                 <div className="col-4">
