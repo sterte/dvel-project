@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
 /* --------------- */
 
 
-class Example extends Component {
+class MyAutoSuggest extends Component {
   constructor(props) {
     super(props);
 
@@ -104,4 +104,4 @@ class Example extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Example);
+export default connect(mapStateToProps, mapDispatchToProps)(MyAutoSuggest);

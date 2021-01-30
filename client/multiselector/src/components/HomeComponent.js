@@ -1,13 +1,13 @@
 
 import React from 'react';
-import Example from './AutoSuggestExample';
+import MultiSelector from './MultiSelector';
 
 function Home(props) {
 	return (
 		<div className="container">
             <div className="row justify-content-md-center">
 		        <div className="col-4">
-                    <Example 
+                    <MultiSelector 
                     type="actor"
                     autocompleteLabel="label"
                     autocompleteURL="http://localhost:8080"
@@ -15,13 +15,13 @@ function Home(props) {
                     />
                 </div>
                 <div className="col-4">
-                    <Example 
+                    <MultiSelector 
                     type="director"
                     emptyListMessage="Eleno"
                     />
                 </div>
                 <div className="col-4">
-                    <Example 
+                    <MultiSelector 
                     type="movie"
                     autocompleteKeywords="keywords"
                     />
