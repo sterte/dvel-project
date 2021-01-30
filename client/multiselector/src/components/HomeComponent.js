@@ -15,6 +15,7 @@ function Home(props) {
                     emptyListMessage="Elenco Attori vuoto"
                     entries={[{"label": "Pippo", "value": 2000000}, {"label": "Pluto", "value": 2000001}]}
                     hiddenInputId="multiSelectorHiddenInput"
+                    maxEntries="5"
                     type="actor"
                     />
                 </div>

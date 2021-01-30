@@ -30,6 +30,7 @@ class MyAutoSuggest extends Component {
     this.state = {
       value: '',
       previousValue: '',
+      selectionExpanded: false,
       selectedElements: []       
     };
 
@@ -98,13 +99,21 @@ class MyAutoSuggest extends Component {
     return result;
   }
 
+  visibleSelectionSize() {
+    let maxEntries = this.props.maxEntries ? this.props.maxEntries : 0;
+    if(this.state.selectionExpanded || maxEntries == 0)
+      return this.state.selectedElements.length;          
+    return maxEntries;
+
+  }
+
   onSuggestionsFetchRequested = ({ value }) => {        
     this.loadSuggestions(value);
   };
 
   onSuggestionsClearRequested = () => {
       this.props.suggestions.suggestions = [];    
-  };
+  };  
 
   render() {
     const { value } = this.state;
@@ -125,7 +134,7 @@ class MyAutoSuggest extends Component {
         );
     }
 
-    const selectedBoxes = this.state.selectedElements.map((item) => {
+    const selectedBoxes = this.state.selectedElements.slice(0, this.visibleSelectionSize()).map((item) => {
       return (
         <div key={item.value} className="col-12 col-md-5 m-1">
         <RenderSelectedItem item={item} />
@@ -134,11 +143,13 @@ class MyAutoSuggest extends Component {
     });
 
     let hiddenInputfieldName = this.props.hiddenInputId ? this.props.hiddenInputId : "'multiSelectorHiddenInput'";
+    let maxEntries = this.props.maxEntries ? this.props.maxEntries : 0;
 
     return (
       <>
       <div className="row">
         {this.state.selectedElements.length === 0 ? this.props.emptyListMessage : selectedBoxes }
+        {this.state.selectedElements.length > maxEntries && <Button onClick={() => this.setState({selectionExpanded: true})}>X</Button> }
       </div>
       <div className="row">
         <div>
