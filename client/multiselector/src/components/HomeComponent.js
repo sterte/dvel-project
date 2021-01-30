@@ -12,12 +12,16 @@ function Home(props) {
                     autocompleteLabel="label"
                     autocompleteValue="value"
                     autocompleteURL="http://localhost:8080"
-                    emptyListMessage="Elenco Attori vuoto"
+                    emptyListMessage="Elenco Ruoli vuoto"
                     entries={[{"label": "Pippo", "value": 2000000}, {"label": "Pluto", "value": 2000001}]}
                     hiddenInputId="multiSelectorHiddenInput"
                     maxEntries="5"
                     maxResults="10"
+                    minQueryLength="3"
+                    placeholder="Filtra nome ruolo"
                     type="actor"
+                    title="Associa ruoli"
+                    viewListMessage="Visualizza elenco ruoli"
                     />
                 </div>
                 <div className="col-4">

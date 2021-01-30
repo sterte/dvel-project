@@ -37,6 +37,7 @@ class MyAutoSuggest extends Component {
     this.renderSuggestion = this.renderSuggestion.bind(this);
     this.getSuggestionValue = this.getSuggestionValue.bind(this);
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
+    this.shouldRenderSuggestions = this.shouldRenderSuggestions.bind(this);
   }
   
   componentDidMount(){
@@ -99,6 +100,11 @@ class MyAutoSuggest extends Component {
     return result;
   }
 
+  shouldRenderSuggestions(value, reason) {
+    let minQueryLength = this.props.minQueryLength ? this.props.minQueryLength : 3;
+    return value.trim().length >= minQueryLength;
+  }
+
   visibleSelectionSize() {
     let maxEntries = this.props.maxEntries ? this.props.maxEntries : 0;
     if(this.state.selectionExpanded || maxEntries == 0)
@@ -117,9 +123,10 @@ class MyAutoSuggest extends Component {
   };  
 
   render() {
-    const { value } = this.state;
+    let placeholder = this.props.placeholder ? this.props.placeholder : "";
+    const { value } = this.state;    
     const inputProps = {
-      placeholder: "Type 'c'",
+      placeholder: placeholder,
       value,
       onChange: this.onChange,
     };
@@ -135,7 +142,7 @@ class MyAutoSuggest extends Component {
         );
     }
 
-    const selectedBoxes = this.state.selectedElements.slice(0, this.visibleSelectionSize()).map((item) => {
+    const selectedBoxes = this.state.selectedElements.slice(0, this.visibleSelectionSize()).map((item) => {      
       return (
         <div key={item.value} className="col-12 col-md-5 m-1">
         <RenderSelectedItem item={item} />
@@ -143,13 +150,21 @@ class MyAutoSuggest extends Component {
         );
     });
 
-    let hiddenInputfieldName = this.props.hiddenInputId ? this.props.hiddenInputId : "'multiSelectorHiddenInput'";
-    let maxEntries = this.props.maxEntries ? this.props.maxEntries : 0;
+    let hiddenInputId = this.props.hiddenInputId ? this.props.hiddenInputId : "multiSelectorHiddenInput";
+    let maxEntries = this.props.maxEntries ? this.props.maxEntries : 0;    
+    let title = this.props.title ? this.props.title : "";    
+    let viewListMessage = this.props.viewListMessage ? this.props.viewListMessage : "";
 
     return (
       <>
+      {title &&
       <div className="row">
-        {this.state.selectedElements.length === 0 ? this.props.emptyListMessage : selectedBoxes }
+        <p>{title}</p>
+      </div>
+      }
+      <div className="row">      
+        {this.state.selectedElements.length === 0 ? this.props.emptyListMessage : viewListMessage }
+        {this.state.selectedElements.length > 0 && selectedBoxes }
         {this.state.selectedElements.length > maxEntries && <Button onClick={() => this.setState({selectionExpanded: true})}>X</Button> }
       </div>
       <div className="row">
@@ -164,8 +179,9 @@ class MyAutoSuggest extends Component {
             onSuggestionSelected={this.onSuggestionSelected}
             getSuggestionValue={this.getSuggestionValue}
             renderSuggestion={this.renderSuggestion}
+            shouldRenderSuggestions={this.shouldRenderSuggestions}
             inputProps={inputProps} />
-          <input type="hidden" readOnly id={hiddenInputfieldName} value={this.selectedElementIds()}/>
+          <input type="hidden" readOnly id={hiddenInputId} value={this.selectedElementIds()}/>
         </div>
       </div>
       </>
