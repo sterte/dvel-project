@@ -1,15 +1,10 @@
-import { createStore } from 'redux'
-
-function multiSelectorState(state = {}, action) {
-  switch (action.type) {
-    case 'ADD_TODO':
-      return state
-    default:
-      return state
-  }
-}
-
+import { applyMiddleware, createStore } from 'redux'
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+import { Items } from './items';
+ 
 export const ConfigureStore = () => {
-  return createStore(multiSelectorState);  
+  const store = createStore(Items, applyMiddleware(thunk, logger));
+  return store; 
 }
 

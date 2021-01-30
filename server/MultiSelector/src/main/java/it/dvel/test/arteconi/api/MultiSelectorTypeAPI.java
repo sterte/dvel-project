@@ -88,7 +88,12 @@ public class MultiSelectorTypeAPI {
 		}
 		finally{
 			System.out.println(formattedDate + ": " + status + ": /" + type + "/" + label + " - " + timer + "ms");
-			return Response.status(status).entity(result).build();
+			return Response.status(status)
+			.header("Access-Control-Allow-Origin", "*")
+			.header("Access-Control-Allow-Credentials", "true")
+			.header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+			.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+			.entity(result).build();
 		}		
 	}
 }
