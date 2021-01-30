@@ -1,5 +1,7 @@
 package it.dvel.test.arteconi.api;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import it.dvel.test.arteconi.db.MongoDbConnection;
@@ -19,22 +21,74 @@ import static com.mongodb.client.model.Projections.*;
 
 
 
-
+/** REST API endpoint for "/{type}/" requests
+possible "type" values: "actor", "director", "movie"
+ */
 @Path("/{type: (actor|director|movie)}")
 public class MultiSelectorTypeAPI {
 
+	
+	/** REST API endpoint for GET request "/{type}/{label}"
+	"label" is the search string used for case insensitive search in items of type "type"
+ 	*/
 	@GET
-	@Path("/{value}")
+	@Path("/{label}")
 	@Produces(MediaType.APPLICATION_JSON)  
-	public Response getByTypeAndValue(@PathParam("type") String type, @PathParam("value") String value) {
-		String result = "";		
-		MongoCollection collection = MongoDbConnection.getInstance().getDatabase().getCollection("item");
-		Pattern pattern = Pattern.compile("^.*" + value + ".*$", Pattern.CASE_INSENSITIVE);
-		MongoCursor<Document> cursor = collection.find(and(eq("type", type), regex("label", pattern))).projection(fields(exclude("type"), excludeId())).iterator();
-		while(cursor.hasNext()){
-			result = result.concat(cursor.next().toJson());
+	public Response getByTypeAndValue(@PathParam("type") String type, @PathParam("label") String label) {		
+		
+		String result = "";
+		Status status = Status.OK;
+		long timer = 0;
+		String formattedDate = "";
+		
+		try{
+			timer = System.currentTimeMillis();
+
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");
+			Date date = new Date(timer);
+			formattedDate = formatter.format(date);
+
+			//sleeps a random amount of milliseconds (0-500) to simulate network latency
+			long fakeWait = (long)(Math.random() * 500);
+			Thread.sleep(fakeWait);
+
+			//works on "item" collection of the mongo db defined by the connection
+			MongoCollection collection = MongoDbConnection.getInstance().getDatabase().getCollection("item");
+
+			//prepares the regexp for thedb search
+			Pattern pattern = Pattern.compile("^.*" + label + ".*$", Pattern.CASE_INSENSITIVE);
+
+			//executes the query to the mongo db
+			MongoCursor<Document> cursor = collection.find(
+				and(
+					eq("type", type), 
+					regex("label", pattern)
+				)
+			).projection(fields(exclude("type"), excludeId())).iterator();
+			
+			//build a string representing the obtained result in json
+			result = "[";
+			while(cursor.hasNext()){
+				result = result.concat(cursor.next().toJson());
+				if(cursor.hasNext()){
+					result = result.concat(", \n");
+				}
+			}
+
+			//everything went good, response status 200
+			result = result.concat("]");
+			status = Status.OK;
+			timer = System.currentTimeMillis() - timer;
 		}
-		Status status = result.isEmpty() ? Status.NOT_FOUND : Status.OK;
-		return Response.status(status).entity(result).build();
+		catch(Exception e){
+			//if any error occurred a 500 response status and empty result is returned
+			status = Status.INTERNAL_SERVER_ERROR;
+			result = "";			
+			System.err.println(e.getMessage());						
+		}
+		finally{
+			System.out.println(formattedDate + ": " + status + ": /" + type + "/" + label + " - " + timer + "ms");
+			return Response.status(status).entity(result).build();
+		}		
 	}
 }
