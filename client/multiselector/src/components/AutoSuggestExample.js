@@ -22,15 +22,6 @@ const mapDispatchToProps = (dispatch) => ({
 /*    Component    */
 /* --------------- */
 
-function getSuggestionValue(suggestion) {
-  return suggestion.label;
-}
-
-function renderSuggestion(suggestion) {
-  return (
-    <span>{suggestion.label}</span>
-  );
-}
 
 class Example extends Component {
   constructor(props) {
@@ -40,9 +31,22 @@ class Example extends Component {
       value: '',
       previousValue: ''      
     };
+
+    this.renderSuggestion = this.renderSuggestion.bind(this);
   }
 
 
+  getSuggestionValue(suggestion) {
+    let fieldName = this.props.autocompleteLabel ? this.props.autocompleteLabel : "label";
+    return suggestion[fieldName];
+  }
+  
+  renderSuggestion(suggestion) {
+    let fieldName = this.props.autocompleteLabel ? this.props.autocompleteLabel : "label";
+    return (      
+      <span>{suggestion[fieldName]}</span>
+    );
+  }
   
   loadSuggestions(value) {
     let request = this.props.autocompleteKeywords ? this.props.autocompleteKeywords : "keywords";
@@ -83,8 +87,8 @@ class Example extends Component {
           suggestions={this.props.suggestions.suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          renderSuggestion={renderSuggestion}
+          getSuggestionValue={this.getSuggestionValue}
+          renderSuggestion={this.renderSuggestion}
           inputProps={inputProps} />
       </div>
     );

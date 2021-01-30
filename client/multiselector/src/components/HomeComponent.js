@@ -9,6 +9,7 @@ function Home(props) {
 		        <div className="col-4">
                     <Example 
                     type="actor"
+                    autocompleteLabel="label"
                     />
                 </div>
                 <div className="col-4">
@@ -19,7 +20,7 @@ function Home(props) {
                 <div className="col-4">
                     <Example 
                     type="movie"
-                    autocompleteKeywords="testpar"
+                    autocompleteKeywords="keywords"
                     />
                 </div>
             </div>
