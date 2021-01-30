@@ -38,6 +38,13 @@ class MyAutoSuggest extends Component {
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
   }
   
+  componentDidMount(){
+    if(!this.props.entries)
+      return;
+    if(this.props.entries.length>0){
+      this.setState({selectedElements: this.state.selectedElements.concat(this.props.entries)})
+    }
+  }
 
   getSuggestionValue(suggestion) {
     let fieldName = this.props.autocompleteLabel ? this.props.autocompleteLabel : "label";
@@ -67,6 +74,7 @@ class MyAutoSuggest extends Component {
     
 
   onSuggestionSelected(event, { suggestion }){
+    console.log(this.state.selectedElements)
     if(!this.state.selectedElements.includes(suggestion)){      
       this.setState({selectedElements: this.state.selectedElements.concat(suggestion), previousValue: '', value: ''});
     }    
@@ -76,7 +84,7 @@ class MyAutoSuggest extends Component {
     if(!value)
       return;
     let fieldName = this.props.autocompleteValue ? this.props.autocompleteValue : "value";
-    this.setState({selectedElements: this.state.selectedElements.filter((el) => el[fieldName] != value)});
+    this.setState({selectedElements: this.state.selectedElements.filter((el) => el[fieldName] !== value)});
   }
 
   onSuggestionsFetchRequested = ({ value }) => {        

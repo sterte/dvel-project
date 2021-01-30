@@ -13,8 +13,7 @@ function Home(props) {
                     autocompleteValue="value"
                     autocompleteURL="http://localhost:8080"
                     emptyListMessage="Elenco Attori vuoto"
-
-
+                    entries={[{"label": "Pippo", "value": 2000000}, {"label": "Pluto", "value": 2000001}]}
                     type="actor"
                     />
                 </div>
