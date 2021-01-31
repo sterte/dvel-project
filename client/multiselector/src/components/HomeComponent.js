@@ -17,7 +17,7 @@ function Home(props) {
                     hiddenInputId="multiSelectorHiddenInput"
                     maxEntries="3"
                     maxResults="10"
-                    minQueryLength="3"
+                    minQueryLength="1"
                     placeholder="Filtra nome ruolo"
                     type="actor"
                     title="Associa ruoli"

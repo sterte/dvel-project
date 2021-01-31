@@ -48,9 +48,9 @@ class MyAutoSuggest extends Component {
     this.emptyListMessage = this.props.emptyListMessage ? this.props.emptyListMessage : "";
     this.entries = this.props.entries ? this.props.entries : [];
     this.hiddenInputId = this.props.hiddenInputId ? this.props.hiddenInputId : "multiSelectorHiddenInput"; 
-    this.maxEntries = this.props.maxEntries ? this.props.maxEntries : 0;
-    this.maxResults = this.props.maxResults ? this.props.maxResults : 10;
-    this.minQueryLength = this.props.minQueryLength ? this.props.minQueryLength : 3;
+    this.maxEntries = this.props.maxEntries ? parseInt(this.props.maxEntries) : 0;
+    this.maxResults = this.props.maxResults ? parseInt(this.props.maxResults) : 10;
+    this.minQueryLength = this.props.minQueryLength ? parseInt(this.props.minQueryLength) : 3;
     this.placeholder = this.props.placeholder ? this.props.placeholder : "";
     this.title = this.props.title ? this.props.title : "";    
     this.viewListMessage = this.props.viewListMessage ? this.props.viewListMessage : "";
@@ -86,16 +86,23 @@ class MyAutoSuggest extends Component {
     
 
   onSuggestionSelected(event, { suggestion }){
-    console.log(this.state.selectedElements)
-    if(!this.state.selectedElements.includes(suggestion)){      
-      this.setState({selectedElements: this.state.selectedElements.concat(suggestion), previousValue: '', value: ''});
-    }    
+    if(this.state.selectedElements.filter(el => el.value === suggestion.value).length === 0){      
+      this.setState({selectedElements: this.state.selectedElements.concat(suggestion), previousValue: '', value: ''});      
+    }
+    else{
+      alert("aaa");
+    }
+    this.setState({previousValue: '', value: ''});
   }
 
   removeSelectedItem(value){
     if(!value)
-      return;    
+      return;        
     this.setState({selectedElements: this.state.selectedElements.filter((el) => el[this.autocompleteValue] !== value)});    
+    if(this.state.selectedElements.length <= this.maxEntries + 1){
+      console.log(this.state.selectedElements.length + " " + this.state.selectionExpanded + " " + this.maxEntries);
+      this.setState({selectionExpanded: false});    
+    }
   }
 
   selectedElementIds(){
