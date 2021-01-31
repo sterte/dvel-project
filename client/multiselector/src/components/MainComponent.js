@@ -6,23 +6,23 @@ import SingleSelector from './SingleSelectorComponent';
 import MultipleSelector from './MultipleSelectorComponent';
 import Playground from './PlaygroundComponent';
 
-class Main extends Component{
+class Main extends Component {
 
-  render() {    
+    render() {
 
-    return (
-      <div>      
-      <Header />            
-      <Switch>
-      <Route path="/home" component={ () => <Home /> } />            
-      <Route path="/single" component={ () => <SingleSelector /> } />            
-      <Route path="/multi" component={ () => <MultipleSelector /> } />      
-      <Route path="/playground" component={ () => <Playground /> } />      
-      <Redirect to="/home" />
-      </Switch>            
-      </div>
-      );
-  }
+        return (
+            <div>
+                <Header />
+                <Switch>
+                    <Route path="/home" component={() => <Home />} />
+                    <Route path="/single" component={() => <SingleSelector />} />
+                    <Route path="/multi" component={() => <MultipleSelector />} />
+                    <Route path="/playground" component={() => <Playground />} />
+                    <Redirect to="/home" />
+                </Switch>
+            </div>
+        );
+    }
 }
 
 export default withRouter(Main);
