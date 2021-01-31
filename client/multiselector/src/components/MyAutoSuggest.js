@@ -154,7 +154,7 @@ class MyAutoSuggest extends Component {
         <CardTitle>{item.label}</CardTitle>
         </div>
         <div className="col-2">
-        <Button color="danger" size="sm" onClick={() => this.removeSelectedItem(item[this.autocompleteValue])}>X</Button>
+        <Button color="primary" onClick={() => this.removeSelectedItem(item[this.autocompleteValue])}><span className="fa fa-trash fa-lg"/></Button>
         </div>
         </div>
         </CardBody>
@@ -185,8 +185,8 @@ class MyAutoSuggest extends Component {
         <div className="col-10">
         <CardTitle>{count}</CardTitle>
         </div>
-        <div className="col-2">
-        <Button color="secondary" size="sm" onClick={() => this.setState({selectionExpanded: true})}>...</Button>     
+        <div className="col-2">        
+        <Button color="primary"f onClick={() => this.setState({selectionExpanded: true})}><span className="fa fa-ellipsis-h fa-lg"/></Button>     
         </div>
         </div>
         </CardBody>
