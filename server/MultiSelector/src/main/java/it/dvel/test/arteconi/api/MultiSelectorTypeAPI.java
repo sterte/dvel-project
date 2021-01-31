@@ -4,6 +4,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Sorts;
 import it.dvel.test.arteconi.db.MongoDbConnection;
 import java.util.regex.Pattern;
 import javax.ws.rs.DefaultValue;
@@ -68,7 +69,7 @@ public class MultiSelectorTypeAPI {
 					eq("type", type), 
 					regex("label", pattern)
 				)
-			).projection(fields(exclude("type"), excludeId()));
+			).projection(fields(exclude("type"), excludeId())).sort(Sorts.ascending("label"));
 
 			if(maxResultsToInt!=0){
 				query.limit(maxResultsToInt);
