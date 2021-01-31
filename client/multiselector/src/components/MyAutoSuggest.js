@@ -90,7 +90,7 @@ class MyAutoSuggest extends Component {
       this.setState({selectedElements: this.state.selectedElements.concat(suggestion), previousValue: '', value: ''});      
     }
     else{
-      alert("aaa");
+      alert("Elemento già inserito. Non è possibile inserire elementi duplicati.");
     }
     this.setState({previousValue: '', value: ''});
   }
@@ -100,7 +100,6 @@ class MyAutoSuggest extends Component {
       return;        
     this.setState({selectedElements: this.state.selectedElements.filter((el) => el[this.autocompleteValue] !== value)});    
     if(this.state.selectedElements.length <= this.maxEntries + 1){
-      console.log(this.state.selectedElements.length + " " + this.state.selectionExpanded + " " + this.maxEntries);
       this.setState({selectionExpanded: false});    
     }
   }
@@ -150,7 +149,7 @@ class MyAutoSuggest extends Component {
         <Card>				      
         <CardBody>
         <div className="row">
-        <div className="col-10">
+        <div className="d-flex align-items-center col-10">
         <CardTitle>{item.label}</CardTitle>
         </div>
         <div className="col-2">
@@ -182,8 +181,8 @@ class MyAutoSuggest extends Component {
         <Card>		
         <CardBody>
         <div className="row">
-        <div className="col-10">
-        <CardTitle>{count}</CardTitle>
+        <div className="d-flex align-items-center col-10">          
+        <CardTitle>Altri {count}</CardTitle>
         </div>
         <div className="col-2">        
         <Button color="primary"f onClick={() => this.setState({selectionExpanded: true})}><span className="fa fa-ellipsis-h fa-lg"/></Button>     
