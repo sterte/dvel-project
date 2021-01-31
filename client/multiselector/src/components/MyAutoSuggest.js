@@ -5,6 +5,8 @@ import { fetchItems } from '../redux/ActionCreators';
 import { Card, CardTitle, Button, CardBody} from 'reactstrap';
 
 
+
+/* Redux */
 const mapStateToProps = (state) => {
   return {
     suggestions: state
@@ -41,6 +43,7 @@ class MyAutoSuggest extends Component {
   }
   
   componentDidMount(){    
+    //sets up props setting default values for missing and parsing integer values
     this.autocompleteKeywords = this.props.autocompleteKeywords ? this.props.autocompleteKeywords : "keywords";
     this.autocompleteLabel = this.props.autocompleteLabel ? this.props.autocompleteLabel : "label";
     this.autocompleteURL = this.props.autocompleteURL ? this.props.autocompleteURL : "";
@@ -62,20 +65,29 @@ class MyAutoSuggest extends Component {
     }    
   }
 
+  /* From original doc:
+  Implement it to teach Autosuggest what should be the input value when suggestion is clicked.
+  */
   getSuggestionValue(suggestion) {
     return suggestion[this.autocompleteLabel];    
   }
   
+  /* From original doc:
+  Use your imagination to define how suggestions are rendered.
+  */
   renderSuggestion(suggestion) {
     return (      
       <span>{suggestion[this.autocompleteLabel]}</span>
     );
   }
   
+  /* Invokes rest api for suggestion loading
+  */
   loadSuggestions(value, maxResults) {        
     let request = this.autocompleteURL + "/" + this.autocompleteKeywords + "/" + this.props.type + "/" + value;
     this.props.fetchItems(request, maxResults);
   }
+
 
   onChange = (event, { newValue }) => {
     this.setState({
@@ -84,26 +96,36 @@ class MyAutoSuggest extends Component {
     });
   };
     
-
+  /* From original doc:
+  Will be called every time suggestion is selected via mouse or keyboard.
+  */
   onSuggestionSelected(event, { suggestion }){
+    //checks if selected element is already been selected before
     if(this.state.selectedElements.filter(el => el.value === suggestion.value).length === 0){      
       this.setState({selectedElements: this.state.selectedElements.concat(suggestion), previousValue: '', value: ''});      
     }
     else{
       alert("Elemento già inserito. Non è possibile inserire elementi duplicati.");
     }
+    //resets search text field after selection
     this.setState({previousValue: '', value: ''});
   }
 
+  /* Triggered when an element is removed (trash icon in a box is pressed)
+  */
   removeSelectedItem(value){
     if(!value)
       return;        
+    //remove the elements from the selected element
     this.setState({selectedElements: this.state.selectedElements.filter((el) => el[this.autocompleteValue] !== value)});    
+    //if selected elements cardinality falls below maxEntries, expandedSelection is resetted (in order to became expandable again if new elements are added)
     if(this.state.selectedElements.length <= this.maxEntries + 1){
       this.setState({selectionExpanded: false});    
     }
   }
 
+  /* Creates a string of comma separated values of selected elements (for hiddenInputId)
+  */
   selectedElementIds(){
     let result = "";    
     for (let i=0; i<this.state.selectedElements.length; i++){      
@@ -114,24 +136,39 @@ class MyAutoSuggest extends Component {
     return result;
   }
 
+  /* From original doc.
+  When the input is focused, Autosuggest will consult this function when to render suggestions.
+  Use it, for example, if you want to display suggestions when input value is at least 2 characters long.
+  */
   shouldRenderSuggestions(value, reason) {    
     return value.trim().length >= this.minQueryLength;
   }
 
+  /* Evaluates number of selected elements to be shown
+  */
   visibleSelectionSize() {    
+    //if selection expanded or selected elements less than maxEntries, shows them all
     if(this.state.selectionExpanded || this.maxEntries === 0)
       return this.state.selectedElements.length;          
+    //otherwise shows the first "maxEntries"
     return this.maxEntries;
 
   }
 
+  /* From original doc.
+  Will be called every time you need to recalculate suggestions.
+  */
   onSuggestionsFetchRequested = ({ value }) => {            
     this.loadSuggestions(value, this.maxResults);
   };
 
+  /* From original doc.
+  Will be called every time you need to set suggestions to [].
+  */
   onSuggestionsClearRequested = () => {
       this.props.suggestions.suggestions = [];    
   };  
+
 
   render() {
     
@@ -142,7 +179,8 @@ class MyAutoSuggest extends Component {
       onChange: this.onChange,
     };
     const status = (this.props.suggestions.isLoading && value.length >= this.minQueryLength ? 'Caricamento...' : '');
-    
+  
+    //renders a single card for a single selected element
     const RenderSelectedItem = ({item}) => {
       return(
         <div className="col-12">
@@ -162,6 +200,7 @@ class MyAutoSuggest extends Component {
         );
     }
 
+    //renders the cards for the selected elements
     const selectedBoxes = this.state.selectedElements.slice(0, this.visibleSelectionSize()).map((item) => {      
       return (
         <div key={item.value} className="col-12 col-md-4 mb-2">
@@ -172,6 +211,7 @@ class MyAutoSuggest extends Component {
         );
     });
 
+    //renders the card with elements count and expand button
     const totalSelectionCount = (maxEntries) => {      
       let count = this.state.selectedElements.length - maxEntries;
       return (        
