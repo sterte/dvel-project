@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import { connect } from 'react-redux';
 import { fetchItems } from '../redux/ActionCreators';
-import { Card, CardTitle, Button} from 'reactstrap';
+import { Card, CardTitle, Button, CardBody} from 'reactstrap';
 
 
 const mapStateToProps = (state) => {
@@ -142,53 +142,78 @@ class MyAutoSuggest extends Component {
       value,
       onChange: this.onChange,
     };
-    const status = (this.props.suggestions.isLoading ? 'Loading...' : 'Type to load suggestions');
+    const status = (this.props.suggestions.isLoading && value.length >= this.minQueryLength ? 'Caricamento...' : '');
     
     const RenderSelectedItem = ({item}) => {
       return(
+        <div className="col-12">
         <Card>				      
+        <CardBody>
+        <div className="row">
+        <div className="col-10">
         <CardTitle>{item.label}</CardTitle>
-        <Button onClick={() => this.removeSelectedItem(item[this.autocompleteValue])}>X</Button>
+        </div>
+        <div className="col-2">
+        <Button color="danger" size="sm" onClick={() => this.removeSelectedItem(item[this.autocompleteValue])}>X</Button>
+        </div>
+        </div>
+        </CardBody>
         </Card>
+        </div>
         );
     }
 
     const selectedBoxes = this.state.selectedElements.slice(0, this.visibleSelectionSize()).map((item) => {      
       return (
-        <div key={item.value} className="col-12 col-md-5 m-1">
+        <div key={item.value} className="col-12 col-md-4 mb-2">
+          <div className="row">
         <RenderSelectedItem item={item} />
+        </div>
         </div>
         );
     });
 
     const totalSelectionCount = (maxEntries) => {      
       let count = this.state.selectedElements.length - maxEntries;
-      return (
-        <Card>				      
-        <CardTitle>{count}</CardTitle>        
+      return (        
+        <div className="col-12 col-md-4">
+        <div className="row">
+        <div className="col-12">
+        <Card>		
+        <CardBody>
+        <div className="row">
+        <div className="col-10">
+        <CardTitle>{count}</CardTitle>
+        </div>
+        <div className="col-2">
+        <Button color="secondary" size="sm" onClick={() => this.setState({selectionExpanded: true})}>...</Button>     
+        </div>
+        </div>
+        </CardBody>
         </Card>
+        </div>        
+        </div>
+        </div>
         );
     };
 
 
     return (
-      <>
-      {this.title &&
-      <div className="row">
-        <p>{this.title}</p>
-      </div>
-      }
-      <div className="row">      
-        {this.state.selectedElements.length === 0 ? this.emptyListMessage : this.viewListMessage }
+      <>      
+      <div className="row mb-2">      
+        <h3>{this.state.selectedElements.length === 0 ? this.emptyListMessage : this.viewListMessage } ({this.state.selectedElements.length})</h3>
+      </div>      
+      <div className="row mb-3">
         {this.state.selectedElements.length > 0 && selectedBoxes }
         {this.state.selectedElements.length > this.maxEntries && !this.state.selectionExpanded && totalSelectionCount(this.maxEntries) }
-        {this.state.selectedElements.length > this.maxEntries && !this.state.selectionExpanded && <Button onClick={() => this.setState({selectionExpanded: true})}>X</Button> }
       </div>
+      {this.title &&
+      <div className="row mb-2">
+        <h3>{this.title}</h3>
+      </div>
+      }
       <div className="row">
-        <div>
-          <div className="status">
-            <strong>Status:</strong> {status}
-          </div>
+        <div>          
           <Autosuggest 
             suggestions={this.props.suggestions.suggestions}
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -199,6 +224,11 @@ class MyAutoSuggest extends Component {
             shouldRenderSuggestions={this.shouldRenderSuggestions}
             inputProps={inputProps} />
           <input type="hidden" readOnly id={this.hiddenInputId} value={this.selectedElementIds()}/>
+          { this.props.suggestions.isLoading &&
+          <div className="status">
+            {status}
+          </div>
+          }
         </div>
       </div>
       </>

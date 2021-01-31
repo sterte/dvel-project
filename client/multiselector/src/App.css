@@ -1,3 +1,7 @@
+.selection-box {
+  height: 30px;
+}
+
 .react-autosuggest__container {
   position: relative;
 }
@@ -28,8 +32,7 @@
 
 .react-autosuggest__suggestions-container--open {
   display: block;
-  position: absolute;
-  top: 51px;
+  position: absolute;  
   width: 280px;
   border: 1px solid #aaa;
   background-color: #fff;

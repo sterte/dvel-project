@@ -5,8 +5,8 @@ import MultiSelector from './MultiSelector';
 function Home(props) {
 	return (
 		<div className="container">
-            <div className="row justify-content-md-center">
-		        <div className="col-4">
+            <div className="row">
+		        <div className="col-12">
                     <MultiSelector 
                     autocompleteKeywords="keywords"                    
                     autocompleteLabel="label"
@@ -23,23 +23,7 @@ function Home(props) {
                     title="Associa ruoli"
                     viewListMessage="Visualizza elenco ruoli"
                     />
-                </div>
-                <div className="col-4">
-                    <MultiSelector 
-                    type="director"
-                    autocompleteLabel="label"
-                    autocompleteURL="http://localhost:8080"
-                    emptyListMessage="Elenco registi vuoto"
-                    />
-                </div>
-                <div className="col-4">
-                    <MultiSelector 
-                    type="movie"
-                    autocompleteLabel="label"
-                    autocompleteURL="http://localhost:8080"
-                    emptyListMessage="Elenco film vuoto"
-                    />
-                </div>
+                </div>                
             </div>
         </div>
 	);
