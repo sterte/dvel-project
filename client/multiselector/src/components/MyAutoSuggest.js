@@ -221,10 +221,10 @@ class MyAutoSuggest extends Component {
                             <Card>
                                 <CardBody>
                                     <div className="row">
-                                        <div className="d-flex align-items-center col-10">
+                                        <div className="d-flex align-items-center col-12">
                                             <CardTitle>Altri {count}</CardTitle>
                                         </div>
-                                        <div className="col-2">
+                                        <div className="d-flex align-items-center col-12">
                                             <Button color="primary" f onClick={() => this.setState({ selectionExpanded: true })}><span className="fa fa-ellipsis-h fa-lg" /></Button>
                                         </div>
                                     </div>
