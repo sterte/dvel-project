@@ -14,7 +14,7 @@ class SingleSelector extends Component {
                             autocompleteValue="value"
                             autocompleteURL="http://192.168.1.20:8080"
                             emptyListMessage="Elenco Ruoli vuoto"
-                            entries={[{ "label": "Al Pacino", "value": 2000000 }, { "label": "Scarlett Johansson", "value": 2000001 }]}
+                            entries={[{ "label": "Robert De Niro", "value": 2000000 }, { "label": "Hedi Lamarr", "value": 2000001 }]}
                             hiddenInputId="multiSelectorHiddenInput"
                             maxEntries="3"
                             maxResults="10"

@@ -12,7 +12,7 @@ class Home extends Component {
                         <p>In particolare le <a href="https://github.com/sterte/dvel-project/blob/main/doc/EBPM-MultiSelectorReactJS-251020-1114-52.pdf" rel="noreferrer" target="_blank">specifiche di progetto</a> e la <a href="https://github.com/sterte/dvel-project/blob/main/README.md" rel="noreferrer" target="_blank">documentazione "tecnica"</a>.</p>
                         <p>La pagina <strong>Single</strong> porta ad un esempio del componente per la ricerca da un gruppo di attori.</p>
                         <p>La pagina <strong>Multi</strong> porta ad un esempio con tre istanze contemporanee del componente per la ricerca di categorie diverse (attori, registi, film).</p>
-                        <p>La pagina <strong>Playground</strong>, al momento analoga a <strong>Single</strong> è stata predisposta per esperimenti e modifiche "live".</p>
+                        <p>La pagina <strong>Playground</strong>, analoga a <strong>Single</strong> consente di visualizzare i parametri che stanno venendo usati per la componente e l'input nascosto al suo interno, è stata predisposta a scopo di debug e per esperimenti e modifiche "live".</p>
                     </div>
                 </div>
             </div>

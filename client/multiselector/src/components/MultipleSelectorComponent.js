@@ -34,7 +34,7 @@ class MultipleSelector extends Component {
                             autocompleteValue="value"
                             autocompleteURL="http://192.168.1.20:8080"
                             emptyListMessage="Elenco Ruoli vuoto"
-                            entries={[{ "label": "Stanley Kubrick", "value": 2000002 }, { "label": "Martin Scorsese", "value": 2000003 }]}
+                            entries={[{ "label": "Sergei Eisenstein", "value": 2000002 }, { "label": "Francois Truffaut", "value": 2000003 }]}
                             hiddenInputId="multiSelectorHiddenInput"
                             maxEntries="3"
                             maxResults="10"
