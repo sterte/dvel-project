@@ -187,10 +187,10 @@ class MyAutoSuggest extends Component {
                     <Card>
                         <CardBody>
                             <div className="row">
-                                <div className="d-flex align-items-center col-10">
+                                <div className="d-flex align-items-center col-12">
                                     <CardTitle>{item.label}</CardTitle>
                                 </div>
-                                <div className="col-2">
+                                <div className="d-flex align-items-center col-12">
                                     <Button color="primary" onClick={() => this.removeSelectedItem(item[this.autocompleteValue])}><span className="fa fa-trash fa-lg" /></Button>
                                 </div>
                             </div>
@@ -262,12 +262,14 @@ class MyAutoSuggest extends Component {
                             renderSuggestion={this.renderSuggestion}
                             shouldRenderSuggestions={this.shouldRenderSuggestions}
                             inputProps={inputProps} />
-                        <input type="hidden" readOnly id={this.hiddenInputId} value={this.selectedElementIds()} />
                         {this.props.suggestions.isLoading &&
                             <div className="status">
                                 {status}
                             </div>
                         }
+                        <div className="mt-3">
+                            <input type={this.props.suggestions.showHiddenInput ? "show" : "hidden"} readOnly id={this.hiddenInputId} value={this.selectedElementIds()} />
+                        </div>
                     </div>
                 </div>
             </>

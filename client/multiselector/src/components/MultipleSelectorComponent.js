@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MultiSelector from './MultiSelector';
+import MyAutoSuggest from './MyAutoSuggest';
 
 class MultipleSelector extends Component {
 
@@ -8,11 +8,11 @@ class MultipleSelector extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-12 mb-5">
-                        <MultiSelector
+                        <MyAutoSuggest
                             autocompleteKeywords="keywords"
                             autocompleteLabel="label"
                             autocompleteValue="value"
-                            autocompleteURL="http://localhost:8080"
+                            autocompleteURL="http://192.168.1.20:8080"
                             emptyListMessage="Elenco Ruoli vuoto"
                             entries={[{ "label": "Marcello Mastroianni", "value": 2000000 }, { "label": "Anna Karina", "value": 2000001 }]}
                             hiddenInputId="multiSelectorHiddenInput"
@@ -28,11 +28,11 @@ class MultipleSelector extends Component {
                     </div>
 
                     <div className="col-12 mb-5">
-                        <MultiSelector
+                        <MyAutoSuggest
                             autocompleteKeywords="keywords"
                             autocompleteLabel="label"
                             autocompleteValue="value"
-                            autocompleteURL="http://localhost:8080"
+                            autocompleteURL="http://192.168.1.20:8080"
                             emptyListMessage="Elenco Ruoli vuoto"
                             entries={[{ "label": "Stanley Kubrick", "value": 2000002 }, { "label": "Martin Scorsese", "value": 2000003 }]}
                             hiddenInputId="multiSelectorHiddenInput"
@@ -48,11 +48,11 @@ class MultipleSelector extends Component {
                     </div>
 
                     <div className="col-12">
-                        <MultiSelector
+                        <MyAutoSuggest
                             autocompleteKeywords="keywords"
                             autocompleteLabel="label"
                             autocompleteValue="value"
-                            autocompleteURL="http://localhost:8080"
+                            autocompleteURL="http://192.168.1.20:8080"
                             emptyListMessage="Elenco Ruoli vuoto"
                             entries={[{ "label": "La corazzata Potemkin", "value": 2000004 }, { "label": "L'esorciccio", "value": 2000005 }]}
                             hiddenInputId="multiSelectorHiddenInput"

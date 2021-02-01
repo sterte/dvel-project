@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MultiSelector from './MultiSelector';
+import MyAutoSuggest from './MyAutoSuggest';
 
 class SingleSelector extends Component {
 
@@ -8,11 +8,11 @@ class SingleSelector extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-12">
-                        <MultiSelector
+                        <MyAutoSuggest
                             autocompleteKeywords="keywords"
                             autocompleteLabel="label"
                             autocompleteValue="value"
-                            autocompleteURL="http://localhost:8080"
+                            autocompleteURL="http://192.168.1.20:8080"
                             emptyListMessage="Elenco Ruoli vuoto"
                             entries={[{ "label": "Al Pacino", "value": 2000000 }, { "label": "Scarlett Johansson", "value": 2000001 }]}
                             hiddenInputId="multiSelectorHiddenInput"

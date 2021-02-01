@@ -39,3 +39,13 @@ export const addItems = (items) => ({
     type: ActionTypes.ADD_ITEMS,
     payload: items
 })
+
+
+export const toggleHiddenInput = (value) => (dispatch) => {
+    dispatch(hiddenInputToggled(value));
+}
+
+export const hiddenInputToggled = (value) => ({
+    type: ActionTypes.TOGGLE_HIDDEN_INPUT,
+    showHiddenInput: value
+})
